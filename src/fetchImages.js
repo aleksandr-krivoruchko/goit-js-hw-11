@@ -15,3 +15,31 @@ export function fetchImages(value) {
     }
   );
 }
+
+
+
+// export function fetchImages(value) {
+// 	axios.get(`${BASE_URL}`, {
+//     params: {
+// 		 headers:{
+// 		      'Content-Type': 'application/json',
+// 		Authorization: myKey,
+// 		 },
+// 		q: value,
+// 		image_type: 'photo',
+// 		orientation: 'horizontal',
+// 		safesearch: true,
+//     }
+//   })
+//   .then(function (response) {
+//     console.log(response);
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   })
+//   .then(function () {
+//   });  
+// }
+
+
+

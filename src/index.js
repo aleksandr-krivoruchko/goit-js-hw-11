@@ -1,9 +1,11 @@
 import Notiflix from 'notiflix';
 import axios, { Axios } from "axios";
+import SimpleLightbox from "simplelightbox";
 import {fetchImages} from './fetchImages';
 import {render} from "./render";
 
 import './css/styles.css';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
 	form: document.querySelector('#search-form'),
@@ -16,36 +18,19 @@ function onSubmitBtnClick(e) {
 	e.preventDefault();
 	const form = e.currentTarget.elements;
 	const value = form.searchQuery.value;
+
 fetchImages(value)
 .then(response => {
+if(response.hits.length === 0){
+	Notiflix.Notify.info("Sorry, there are no images matching your search query. Please try again.")
+}
 	render(response.hits, refs.gallery);
-
+	
 })
-.catch(error => console.log(error));
-
+.catch((error) => {Notiflix.Notify.error("ERROR")});
+e.currentTarget.reset();
 }
 
-//  function render(images) {
-// 	const markup = images.map ((image) => {
-// 		return `<div class="photo-card">
-//   <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
-//   <div class="info">
-//     <p class="info-item">
-//       <b>Likes:${image.likes}</b>
-//     </p>
-//     <p class="info-item">
-//       <b>Views:${image.views}</b>
-//     </p>
-//     <p class="info-item">
-//       <b>Comments:${image.comments}</b>
-//     </p>
-//     <p class="info-item">
-//       <b>Downloads:${image.downloads}</b>
-//     </p>
-//   </div>
-// </div>`}).join("");
-// refs.gallery.innerHTML = markup;
-// }
 
 
 

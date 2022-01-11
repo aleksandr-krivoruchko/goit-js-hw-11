@@ -4,16 +4,16 @@ export function render(images, reference) {
   <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
   <div class="info">
     <p class="info-item">
-      <b>Likes:${image.likes}</b>
+      <b>Likes<br>${image.likes}</b>
     </p>
     <p class="info-item">
-      <b>Views:${image.views}</b>
+      <b>Views<br>${image.views}</b>
     </p>
     <p class="info-item">
-      <b>Comments:${image.comments}</b>
+      <b>Comments<br>${image.comments}</b>
     </p>
     <p class="info-item">
-      <b>Downloads:${image.downloads}</b>
+      <b>Downloads<br>${image.downloads}</b>
     </p>
   </div>
 </div>`}).join("");
