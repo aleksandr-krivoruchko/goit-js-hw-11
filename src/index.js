@@ -1,7 +1,6 @@
 import Notiflix from 'notiflix';
-import axios, { Axios } from "axios";
+// import axios, { Axios } from "axios";
 import SimpleLightbox from "simplelightbox";
-// import {fetchImages} from './fetchImages';
 import {render, gallery} from "./render";
 import ImagesApiServise from "./images-service";
 import LoadMoreBtn from './load-more-btn';
@@ -14,13 +13,12 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const refs = {
 	form: document.querySelector('#search-form'),
-	// btnLoadMore:document.querySelector('.load-more'),
 }
 const imagesApiServise = new ImagesApiServise();
 const loadMoreBtn = new LoadMoreBtn({selector: ".load-more", hidden:true});
 
 refs.form.addEventListener('submit', onSubmitBtnClick);
-loadMoreBtn.refs.button.addEventListener('click', onBtnLoadMoreClick);
+loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 
 //!======================fns==================================
 
@@ -31,21 +29,27 @@ function onSubmitBtnClick(e) {
 	gallery.innerHTML = "";
 
 	if(imagesApiServise.query.trim() === ''){
+		loadMoreBtn.hide();
 			Notiflix.Notify.warning("Enter correct characters to search!!!")
       return;
 	}
+	loadMoreBtn.show();
+	fetchImages();
 
-	loadMoreBtn.show()
-loadMoreBtn.disabled()
+e.currentTarget.reset();
+}
 
-
+function fetchImages() {
+	loadMoreBtn.disabled()
 imagesApiServise.fetchImages()
 .then(images => {
-
+		countOfImages();
 	if(images.length === 0){
+		loadMoreBtn.hide();
 	Notiflix.Notify.info("Sorry, there are no images matching your search query. Please try again.")
 	gallery.innerHTML = "";
 }
+
 render(images);
 
 loadMoreBtn.enable();
@@ -54,21 +58,21 @@ loadMoreBtn.enable();
 	Notiflix.Notify.failure('Sorry.Something wrong(')
 });
 
-e.currentTarget.reset();
 }
 
+function countOfImages() {
+const currentPage = imagesApiServise.page * imagesApiServise.perPage - imagesApiServise.perPage;
+const maxPages = imagesApiServise.totalImages;
+if(currentPage === 40){
+	Notiflix.Notify.success(`Hooray! We found ${maxPages} images.`);
 
-function onBtnLoadMoreClick(e) {
-	e.preventDefault();
-	
-loadMoreBtn.disabled();
-
-imagesApiServise.fetchImages().then((images) => {
-	render(images);
-loadMoreBtn.enable();
-});
 }
 
+if(currentPage > maxPages){
+		loadMoreBtn.hide();
+Notiflix.Notify.info(`We're sorry, but you've reached the end of search ${maxPages} results`);
+}
+}
 
 // const gallery = new SimpleLightbox('.gallery a', {
 // 	captionsData:'alt',
