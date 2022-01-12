@@ -3,9 +3,9 @@ const myKey = '25188312-8cdfcf53729040d6ed9110eb8';
 
 
 
-export function fetchImages(value) {
+export function fetchImages(searchQuery) {
 	
-  return fetch(`${BASE_URL}/?key=${myKey}&q=${value}&image_type=photo&orientation=horizontal&safesearch =true`)
+  return fetch(`${BASE_URL}/?key=${myKey}&q=${searchQuery}&image_type=photo&orientation=horizontal&safesearch =true&per_page=40&page=2`)
     .then(
     (response) => {
       if (!response.ok) {

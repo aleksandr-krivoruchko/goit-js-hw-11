@@ -1,7 +1,10 @@
-export function render(images, reference) {
+	export const gallery = document.querySelector('.gallery');
+
+
+export function render(images) {
 	const markup = images.map ((image) => {
-		return `<div class="photo-card">
-  <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy" />
+		return `<a href="${image.largeImageURL}"><div class="photo-card">
+  <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy"/>
   <div class="info">
     <p class="info-item">
       <b>Likes<br>${image.likes}</b>
@@ -16,7 +19,9 @@ export function render(images, reference) {
       <b>Downloads<br>${image.downloads}</b>
     </p>
   </div>
-</div>`}).join("");
+</div></a>`}).join("");
 
-reference.innerHTML = markup;
+gallery.insertAdjacentHTML('beforeend', markup);
 }
+
+ 
