@@ -1,5 +1,4 @@
 import Notiflix from 'notiflix';
-// import axios from "axios";
 import SimpleLightbox from "simplelightbox";
 import {render, gallery} from "./render";
 import ImagesApiServise from "./images-service";
@@ -19,10 +18,7 @@ Notiflix.Notify.init({
   
   });
 
-const refs = {
-	form: document.querySelector('#search-form'),
-
-}
+const form = document.querySelector('#search-form');
 const imagesApiServise = new ImagesApiServise();
 const loadMoreBtn = new LoadMoreBtn({selector: ".load-more", hidden:true});
 const galleryModal = new SimpleLightbox('.gallery a', {
@@ -33,7 +29,7 @@ const galleryModal = new SimpleLightbox('.gallery a', {
  });
 
 
-refs.form.addEventListener('submit', onSubmitBtnClick);
+form.addEventListener('submit', onSubmitBtnClick);
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
 window.addEventListener('scroll', handleScroll);
 
@@ -117,3 +113,5 @@ $(function(){
         return false;
     });
 });
+
+
