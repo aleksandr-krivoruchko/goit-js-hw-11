@@ -1,5 +1,5 @@
 import Notiflix from 'notiflix';
-// import axios, { Axios } from "axios";
+// import axios from "axios";
 import SimpleLightbox from "simplelightbox";
 import {render, gallery} from "./render";
 import ImagesApiServise from "./images-service";
@@ -21,6 +21,7 @@ Notiflix.Notify.init({
 
 const refs = {
 	form: document.querySelector('#search-form'),
+
 }
 const imagesApiServise = new ImagesApiServise();
 const loadMoreBtn = new LoadMoreBtn({selector: ".load-more", hidden:true});
@@ -31,19 +32,10 @@ const galleryModal = new SimpleLightbox('.gallery a', {
 	captionPosition:'bottom',
  });
 
- //todo===плавная прокрутка============
-// const { height: cardHeight } = document
-//   .querySelector('.gallery')
-//   .firstElementChild.getBoundingClientRect();
-
-// window.scrollBy({
-//   top: cardHeight * 2,
-//   behavior: 'smooth',
-// });
-
 
 refs.form.addEventListener('submit', onSubmitBtnClick);
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
+window.addEventListener('scroll', handleScroll);
 
 
 function onSubmitBtnClick(e) {
@@ -54,7 +46,7 @@ function onSubmitBtnClick(e) {
 
 	if(imagesApiServise.query.trim() === ''){
 		loadMoreBtn.hide();
-			Notiflix.Notify.warning("Enter correct characters to search!!!")
+			Notiflix.Notify.warning("Please enter correct search details!!!")
       return;
 	}
 	loadMoreBtn.show();
@@ -63,28 +55,6 @@ function onSubmitBtnClick(e) {
 e.currentTarget.reset();
 }
 
-//!=======then=======================
-// function fetchImages() {
-// 	loadMoreBtn.disabled()
-
-// imagesApiServise.fetchImages()
-// .then(images => {
-// 		countOfImages();
-// 	if(images.length === 0){
-// 		loadMoreBtn.hide();
-// 	Notiflix.Notify.info("Sorry, there are no images matching your search query. Please try again.")
-// 	gallery.innerHTML = "";
-// }
-// render(images);
-
-// loadMoreBtn.enable();
-// })
-// .catch((error) => {
-// 	Notiflix.Notify.failure('Sorry.Something wrong(')
-// });
-
-// }
-//!========async/await===============
 async function fetchImages() {
 	loadMoreBtn.disabled()
 
@@ -97,9 +67,10 @@ try {
 	gallery.innerHTML = "";
 }
 render(images);
+
 galleryModal.refresh();
 
-if(images.length < 40){
+if(images.length < imagesApiServise.perPage){
 	loadMoreBtn.hide();
 }
 loadMoreBtn.enable();
@@ -122,6 +93,15 @@ if(currentImages > totalImages && totalImages !== 0 && totalImages > quantityIma
 Notiflix.Notify.info(`We're sorry, but you've reached the end of search ${totalImages} results`);
 }
 }
+
+function handleScroll(e) {
+	const {scrollTop, scrollHeight, clientHeight} = document.documentElement;
+
+	if(scrollTop + clientHeight >= scrollHeight - 5){
+		fetchImages();
+	}
+}
+
 
 //!==========Кнопка наверх=====================
 $(function(){      
