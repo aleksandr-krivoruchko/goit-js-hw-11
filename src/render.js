@@ -3,7 +3,7 @@
 
 export function render(images) {
 	const markup = images.map ((image) => {
-		return `<a href="${image.largeImageURL}"><div class="photo-card">
+		return `<a href="${image.largeImageURL}" class="photo-card">
   <img src="${image.webformatURL}" alt="${image.tags}" loading="lazy"/>
   <div class="info">
     <p class="info-item">
@@ -19,7 +19,7 @@ export function render(images) {
       <b>Downloads<br>${image.downloads}</b>
     </p>
   </div>
-</div></a>`}).join("");
+</a>`}).join("");
 
 gallery.insertAdjacentHTML('beforeend', markup);
 }
