@@ -31,7 +31,7 @@ const galleryModal = new SimpleLightbox('.gallery a', {
 
 form.addEventListener('submit', onSubmitBtnClick);
 loadMoreBtn.refs.button.addEventListener('click', fetchImages);
-window.addEventListener('scroll', handleScroll);
+// window.addEventListener('scroll', handleScroll);
 
 
 function onSubmitBtnClick(e) {
